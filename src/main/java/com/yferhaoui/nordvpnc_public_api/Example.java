@@ -12,9 +12,11 @@ public final class Example {
 	public final static void main(final String[] args) throws IOException, InterruptedException {
 
 		// NordVPN API Usage
+		System.out.println("Start NordVPN API Usage Examples !");
 		Example.nordVPNAPIUsage();
 
 		// NordVPN Proxy Setup
+		System.out.println("\n\nStart NordVPN Proxy Setup Example !");
 		Example.nordVPNProxySetup();
 
 	}
