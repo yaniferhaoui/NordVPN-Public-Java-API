@@ -79,10 +79,10 @@ final String password = "yourNordVPNPassword";
 final NordVPNAPI client = new NordVPNAPI();
 NordVPNServer server = null;
 do {
-	server = this.client.getRandServer();
+	server = client.getRandServer();
 } while (!server.getFeatures().isProxy()); // Search a server which could to be used as proxy !
 
-final String nordVPNServeurPort = 80; // Always 80
+final String nordVPNServeurPort = "80"; // Always 80
 
 System.setProperty("http.proxyHost", server.getDomain());
 System.setProperty("http.proxyPort", nordVPNServeurPort);
