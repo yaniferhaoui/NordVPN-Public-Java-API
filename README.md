@@ -19,7 +19,7 @@ Functionalities
 
 Usage
 --------
-```javascript
+```java
 final NordVPNAPI client = new NordVPNAPI();
 
 // Get all country in which NordVPN servers are available
@@ -71,7 +71,7 @@ Most of the NordVPN servers can be used as Proxy !
 Use port 80 and the server domain !
 
 ### System Proxy Setup Example :
-```javascript
+```java
 
 final String username = "yourNordVPNUsername";
 final String password = "yourNordVPNPassword";
