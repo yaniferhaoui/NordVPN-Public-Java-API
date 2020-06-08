@@ -73,10 +73,7 @@ public final class Example {
 		final String password = "yourNordVPNPassword";
 
 		final NordVPNAPI client = new NordVPNAPI();
-		NordVPNServer server = null;
-		do {
-			server = client.getRandServer();
-		} while (!server.getFeatures().isProxy()); // Search a server which could to be used as proxy !
+		final NordVPNServer server = client.getRandProxyServer();
 
 		final String nordVPNServeurPort = "80"; // Always 80
 

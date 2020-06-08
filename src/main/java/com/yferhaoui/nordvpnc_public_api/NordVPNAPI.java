@@ -9,6 +9,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import com.google.gson.Gson;
@@ -74,12 +76,42 @@ public final class NordVPNAPI {
 		return servers[randNumber];
 	}
 
-	// Get random country server
+	// Get random proxy server
+	public final NordVPNServer getRandProxyServer() throws IOException, InterruptedException {
+
+		final List<NordVPNServer> list = Arrays.asList(this.getServerList());
+		Collections.shuffle(list);
+
+		for (final NordVPNServer server : list) {
+
+			if (server.getFeatures().isProxy()) {
+				return server;
+			}
+		}
+		throw new IOException("No Proxy server found !");
+	}
+
+	// Get random server in a specific country
 	public final NordVPNServer getRandServer(final String countryCode) throws IOException, InterruptedException {
 
 		final NordVPNServer[] servers = this.getCountryServerList(countryCode);
 		final int randNumber = new Random().nextInt(servers.length);
 		return servers[randNumber];
+	}
+
+	// Get random proxy server in a specific country
+	public final NordVPNServer getRandProxyServer(final String countryCode) throws IOException, InterruptedException {
+
+		final List<NordVPNServer> list = Arrays.asList(this.getCountryServerList(countryCode));
+		Collections.shuffle(list);
+
+		for (final NordVPNServer server : list) {
+
+			if (server.getFeatures().isProxy()) {
+				return server;
+			}
+		}
+		throw new IOException("No Proxy server found in the country " + countryCode);
 	}
 
 	// Check if server domain is valid
@@ -105,4 +137,9 @@ public final class NordVPNAPI {
 		return this.gson.fromJson(response, Short.class);
 	}
 
+	public final static void main(final String[] args) throws IOException, InterruptedException {
+
+		System.out.println("Server: " + new NordVPNAPI().getRandServer("FR").getDomain());
+
+	}
 }
