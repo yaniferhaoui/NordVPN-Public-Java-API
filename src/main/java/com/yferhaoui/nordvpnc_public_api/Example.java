@@ -16,7 +16,7 @@ public final class Example {
 		Example.nordVPNAPIUsage();
 
 		// NordVPN Proxy Setup
-		System.out.println("\n\nStart NordVPN Proxy Setup Example !");
+		System.out.println("\n\nEnd NordVPN Proxy Setup Example !");
 		Example.nordVPNProxySetup();
 
 	}

@@ -8,10 +8,12 @@ import java.net.http.HttpClient.Version;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.yferhaoui.nordvpnc_public_api.data.Country;
@@ -91,6 +93,21 @@ public final class NordVPNAPI {
 		throw new IOException("No Proxy server found !");
 	}
 
+	// Get 10 random proxy server
+	public final List<NordVPNServer> getTenRandProxyServer() throws IOException, InterruptedException {
+
+		final List<NordVPNServer> list = new ArrayList<NordVPNServer>();
+		for (final NordVPNServer server : this.getServerList()) {
+
+			if (server.getFeatures().isProxy()) {
+				list.add(server);
+			}
+		}
+		Collections.shuffle(list);
+
+		return list.stream().limit(10).collect(Collectors.toList());
+	}
+
 	// Get random server in a specific country
 	public final NordVPNServer getRandServer(final String countryCode) throws IOException, InterruptedException {
 
@@ -112,6 +129,22 @@ public final class NordVPNAPI {
 			}
 		}
 		throw new IOException("No Proxy server found in the country " + countryCode);
+	}
+
+	// Get 10 random proxy server in a specific country
+	public final List<NordVPNServer> getTenRandProxyServer(//
+			final String countryCode) throws IOException, InterruptedException {
+
+		final List<NordVPNServer> list = new ArrayList<NordVPNServer>();
+		for (final NordVPNServer server : this.getCountryServerList(countryCode)) {
+
+			if (server.getFeatures().isProxy()) {
+				list.add(server);
+			}
+		}
+		Collections.shuffle(list);
+
+		return list.stream().limit(10).collect(Collectors.toList());
 	}
 
 	// Check if server domain is valid
@@ -139,7 +172,7 @@ public final class NordVPNAPI {
 
 	public final static void main(final String[] args) throws IOException, InterruptedException {
 
-		System.out.println("Server: " + new NordVPNAPI().getRandServer("FR").getDomain());
+		System.out.println("Server: " + new NordVPNAPI().getRandProxyServer("FR").getDomain());
 
 	}
 }
