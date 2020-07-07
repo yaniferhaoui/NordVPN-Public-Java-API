@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import com.google.gson.annotations.Expose;
 
+import lombok.ToString;
+
+@ToString
 public final class NordVPNServer implements Serializable, Comparable<NordVPNServer> {
 
 	/**

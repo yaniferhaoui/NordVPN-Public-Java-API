@@ -1,6 +1,7 @@
 package com.yferhaoui.nordvpnc_public_api;
 
 import java.io.IOException;
+import java.net.ProxySelector;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Redirect;
@@ -13,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.yferhaoui.nordvpnc_public_api.data.Country;
@@ -28,6 +28,7 @@ public final class NordVPNAPI {
 			.connectTimeout(Duration.ofSeconds(60))//
 			.followRedirects(Redirect.NEVER)//
 			.version(Version.HTTP_2)//
+			.proxy(ProxySelector.of(null))//
 			.build();
 
 	private final HttpRequest httpServerListRequest = HttpRequest.newBuilder()//
@@ -61,10 +62,10 @@ public final class NordVPNAPI {
 	}
 
 	// Get all available country servers
-	public final NordVPNServer[] getCountryServerList(final String countryCode)
-			throws IOException, InterruptedException {
+	public final NordVPNServer[] getServerList(final String countryCode) throws IOException, InterruptedException {
 
 		final NordVPNServer[] servers = this.getServerList();
+
 		return Arrays.stream(servers)//
 				.filter(o -> o.getFlag().equalsIgnoreCase(countryCode))//
 				.toArray(NordVPNServer[]::new);
@@ -79,72 +80,87 @@ public final class NordVPNAPI {
 	}
 
 	// Get random proxy server
-	public final NordVPNServer getRandProxyServer() throws IOException, InterruptedException {
+	public final NordVPNServer getRandProxy() throws IOException, InterruptedException {
 
 		final List<NordVPNServer> list = Arrays.asList(this.getServerList());
 		Collections.shuffle(list);
 
 		for (final NordVPNServer server : list) {
 
-			if (server.getFeatures().isProxy()) {
+			if (server.getFeatures().couldBeProxy()) {
 				return server;
 			}
 		}
 		throw new IOException("No Proxy server found !");
 	}
 
-	// Get 10 random proxy server
-	public final List<NordVPNServer> getTenRandProxyServer() throws IOException, InterruptedException {
+	// Get Proxies
+	public final List<NordVPNServer> getProxies() throws IOException, InterruptedException {
 
 		final List<NordVPNServer> list = new ArrayList<NordVPNServer>();
 		for (final NordVPNServer server : this.getServerList()) {
 
-			if (server.getFeatures().isProxy()) {
+			if (server.getFeatures().couldBeProxy()) {
 				list.add(server);
 			}
 		}
+
+		return list;
+	}
+
+	// Get Randomized Proxies
+	public final List<NordVPNServer> getRandomizedProxies() throws IOException, InterruptedException {
+
+		final List<NordVPNServer> list = this.getProxies();
 		Collections.shuffle(list);
 
-		return list.stream().limit(10).collect(Collectors.toList());
+		return list;
 	}
 
 	// Get random server in a specific country
 	public final NordVPNServer getRandServer(final String countryCode) throws IOException, InterruptedException {
 
-		final NordVPNServer[] servers = this.getCountryServerList(countryCode);
+		final NordVPNServer[] servers = this.getServerList(countryCode);
 		final int randNumber = new Random().nextInt(servers.length);
 		return servers[randNumber];
 	}
 
-	// Get random proxy server in a specific country
+	// Get Proxies from specific country
+	public final List<NordVPNServer> getProxies(final String countryCode) throws IOException, InterruptedException {
+
+		final List<NordVPNServer> list = new ArrayList<NordVPNServer>();
+		for (final NordVPNServer server : this.getServerList(countryCode)) {
+
+			if (server.getFeatures().couldBeProxy()) {
+				list.add(server);
+			}
+		}
+
+		return list;
+	}
+
+	// Get Randomized Proxies from specific country
+	public final List<NordVPNServer> getRandomizedProxies(//
+			final String countryCode) throws IOException, InterruptedException {
+
+		final List<NordVPNServer> list = this.getProxies();
+		Collections.shuffle(list);
+
+		return list;
+	}
+
 	public final NordVPNServer getRandProxyServer(final String countryCode) throws IOException, InterruptedException {
 
-		final List<NordVPNServer> list = Arrays.asList(this.getCountryServerList(countryCode));
+		final List<NordVPNServer> list = Arrays.asList(this.getServerList(countryCode));
 		Collections.shuffle(list);
 
 		for (final NordVPNServer server : list) {
 
-			if (server.getFeatures().isProxy()) {
+			if (server.getFeatures().couldBeProxy()) {
 				return server;
 			}
 		}
 		throw new IOException("No Proxy server found in the country " + countryCode);
-	}
-
-	// Get 10 random proxy server in a specific country
-	public final List<NordVPNServer> getTenRandProxyServer(//
-			final String countryCode) throws IOException, InterruptedException {
-
-		final List<NordVPNServer> list = new ArrayList<NordVPNServer>();
-		for (final NordVPNServer server : this.getCountryServerList(countryCode)) {
-
-			if (server.getFeatures().isProxy()) {
-				list.add(server);
-			}
-		}
-		Collections.shuffle(list);
-
-		return list.stream().limit(10).collect(Collectors.toList());
 	}
 
 	// Check if server domain is valid
@@ -172,7 +188,15 @@ public final class NordVPNAPI {
 
 	public final static void main(final String[] args) throws IOException, InterruptedException {
 
-		System.out.println("Server: " + new NordVPNAPI().getRandProxyServer("FR").getDomain());
+//		System.out.println("Server: " + new NordVPNAPI().getRandProxyServer("FR").getDomain());
 
+		final NordVPNServer[] servers = new NordVPNAPI().getServerList("FR");
+		int nbProxyServer = 0;
+
+		for (final NordVPNServer server : servers) {
+			nbProxyServer += server.getFeatures().couldBeProxy() ? 1 : 0;
+		}
+
+		System.out.println("Number Servers : " + servers.length + " | Number ProxyServer : " + nbProxyServer);
 	}
 }

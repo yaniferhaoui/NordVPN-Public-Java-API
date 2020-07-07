@@ -43,7 +43,7 @@ public final class Example {
 
 		// Get all available country servers
 		final String country = "FR";
-		final NordVPNServer[] countryServers = client.getCountryServerList(country);
+		final NordVPNServer[] countryServers = client.getServerList(country);
 
 		System.out.println("\nAll available " + country + " servers : ");
 		for (final NordVPNServer server : countryServers) {
@@ -73,7 +73,7 @@ public final class Example {
 		final String password = "yourNordVPNPassword";
 
 		final NordVPNAPI client = new NordVPNAPI();
-		final NordVPNServer server = client.getRandProxyServer();
+		final NordVPNServer server = client.getRandProxy();
 
 		final String nordVPNServeurPort = "80"; // Always 80
 

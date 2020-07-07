@@ -4,7 +4,10 @@ import java.io.Serializable;
 
 import com.google.gson.annotations.Expose;
 
-public final class Categorie implements Serializable, Comparable<Categorie> {
+import lombok.ToString;
+
+@ToString
+public final class Categorie implements Serializable{
 
 	/**
 	 * 
@@ -18,10 +21,4 @@ public final class Categorie implements Serializable, Comparable<Categorie> {
 	public final String getName() {
 		return this.name;
 	}
-
-	@Override
-	public final int compareTo(final Categorie arg0) {
-		return 0;
-	}
-
 }

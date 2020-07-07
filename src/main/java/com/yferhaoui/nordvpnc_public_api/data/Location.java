@@ -5,6 +5,9 @@ import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import lombok.ToString;
+
+@ToString
 public final class Location implements Serializable, Comparable<Location> {
 
 	/**
