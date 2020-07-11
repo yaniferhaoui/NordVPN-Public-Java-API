@@ -18,7 +18,6 @@ public final class Example {
 		// NordVPN Proxy Setup
 		System.out.println("\n\nEnd NordVPN Proxy Setup Example !");
 		Example.nordVPNProxySetup();
-
 	}
 
 	private final static void nordVPNAPIUsage() throws IOException, InterruptedException {

@@ -149,7 +149,7 @@ public final class NordVPNAPI {
 		return list;
 	}
 
-	public final NordVPNServer getRandProxyServer(final String countryCode) throws IOException, InterruptedException {
+	public final NordVPNServer getRandProxy(final String countryCode) throws IOException, InterruptedException {
 
 		final List<NordVPNServer> list = Arrays.asList(this.getServerList(countryCode));
 		Collections.shuffle(list);
@@ -188,15 +188,15 @@ public final class NordVPNAPI {
 
 	public final static void main(final String[] args) throws IOException, InterruptedException {
 
-//		System.out.println("Server: " + new NordVPNAPI().getRandProxyServer("FR").getDomain());
+		System.out.println("Server: " + new NordVPNAPI().getRandProxy().getDomain());
 
-		final NordVPNServer[] servers = new NordVPNAPI().getServerList("FR");
-		int nbProxyServer = 0;
-
-		for (final NordVPNServer server : servers) {
-			nbProxyServer += server.getFeatures().couldBeProxy() ? 1 : 0;
-		}
-
-		System.out.println("Number Servers : " + servers.length + " | Number ProxyServer : " + nbProxyServer);
+//		final NordVPNServer[] servers = new NordVPNAPI().getServerList("FR");
+//		int nbProxyServer = 0;
+//
+//		for (final NordVPNServer server : servers) {
+//			nbProxyServer += server.getFeatures().couldBeProxy() ? 1 : 0;
+//		}
+//
+//		System.out.println("Number Servers : " + servers.length + " | Number ProxyServer : " + nbProxyServer);
 	}
 }
