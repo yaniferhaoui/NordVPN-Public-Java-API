@@ -1,7 +1,9 @@
+*.properties
 *.git
 *.class
 *.classpath
 *.project
+*.setting
 *.settings
 *.metadata
 *.cache

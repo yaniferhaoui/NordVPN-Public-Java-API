@@ -188,7 +188,7 @@ public final class NordVPNAPI {
 
 	public final static void main(final String[] args) throws IOException, InterruptedException {
 
-		System.out.println("Server: " + new NordVPNAPI().getRandProxy().getDomain());
+		System.out.println("Server: " + new NordVPNAPI().getRandProxy("US").getDomain());
 
 //		final NordVPNServer[] servers = new NordVPNAPI().getServerList("FR");
 //		int nbProxyServer = 0;
