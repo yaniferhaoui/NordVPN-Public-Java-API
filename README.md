@@ -1,4 +1,4 @@
-final NordVPNServer server = client.getRandProxyServer();final NordVPNServer server = client.getRandProxyServer();NordVPN Public Java API
+NordVPN Public Java API
 ========
 
 Simple Java API which allows you to get some public NordVPN data in Java Objects.
